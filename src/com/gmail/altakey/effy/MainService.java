@@ -93,20 +93,19 @@ public class MainService extends Service {
 		this.view = new ImageView(getApplicationContext());
 		this.view.setScaleType(ScaleType.CENTER_CROP);
 		this.view.setOnTouchListener(this.touchListener);
-		this.view.setAlpha(128);
 
 		this.bmp = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-		this.bmp.eraseColor(Color.WHITE);
 		this.view.setImageDrawable(new BitmapDrawable(this.bmp));
 
 		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 			LayoutParams.FILL_PARENT,
 			LayoutParams.FILL_PARENT,
-			LayoutParams.TYPE_SYSTEM_OVERLAY,
-			LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+			LayoutParams.TYPE_SYSTEM_ALERT,
+			LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_DIM_BEHIND,
 			PixelFormat.TRANSLUCENT
 		);
 		params.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
+		params.dimAmount = 0.75f;
 
 		this.windowManager.addView(view, params);
 	}
