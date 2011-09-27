@@ -78,34 +78,22 @@ public class MainService extends Service {
 		isRunning = false;
 	}
 
-	private View.OnTouchListener touchListener = new View.OnTouchListener() {
-		public boolean onTouch(View v, MotionEvent event)
-		{
-			Log.d("IV", "touched!!!");
-			return true;
-		}
-	};
-
 	private void setup()
 	{
 		this.windowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
 		this.view = new ImageView(getApplicationContext());
 		this.view.setScaleType(ScaleType.CENTER_CROP);
-		this.view.setOnTouchListener(this.touchListener);
-
-		this.bmp = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888);
-		this.view.setImageDrawable(new BitmapDrawable(this.bmp));
+		this.view.setImageDrawable(new BitmapDrawable(Scribble.getInstance(1, 1).bitmap));
 
 		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 			LayoutParams.FILL_PARENT,
 			LayoutParams.FILL_PARENT,
-			LayoutParams.TYPE_SYSTEM_ALERT,
-			LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_DIM_BEHIND,
+			LayoutParams.TYPE_SYSTEM_OVERLAY,
+			LayoutParams.FLAG_LAYOUT_IN_SCREEN,
 			PixelFormat.TRANSLUCENT
 		);
 		params.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
-		params.dimAmount = 0.75f;
 
 		this.windowManager.addView(view, params);
 	}
@@ -113,11 +101,7 @@ public class MainService extends Service {
 	private void shutdown()
 	{
 		this.windowManager.removeView(view);
-		this.view.setFocusable(false);
-		this.view.setOnTouchListener(null);
-		
-		this.bmp.recycle();
-		this.bmp = null;
+		Scribble.getInstance(1, 1).recycle();
 	}
 
 	@Override
@@ -138,7 +122,7 @@ public class MainService extends Service {
 		CharSequence text = "タップすると画面を表示します";
 		Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
 		PendingIntent contentIntent =
-			PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+			PendingIntent.getActivity(this, 0, new Intent(this, DrawActivity.class), 0);
 		notification.setLatestEventInfo(
 				this,
 				"MainService",
