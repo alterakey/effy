@@ -50,6 +50,8 @@ import android.util.Log;
 
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.hardware.Camera;
@@ -99,6 +101,14 @@ public class MainService extends Service {
 		isRunning = false;
 	}
 
+	private View.OnTouchListener touchListener = new View.OnTouchListener() {
+		public boolean onTouch(View v, MotionEvent event)
+		{
+			Log.d("IV", "touched!!!");
+			return true;
+		}
+	};
+
 	private void setup()
 	{
 		this.wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
@@ -106,13 +116,14 @@ public class MainService extends Service {
 		this.iView = new ImageView(getApplicationContext());
 		this.iView.setScaleType(ScaleType.CENTER_CROP);
 		this.iView.setAlpha(64);
+		this.iView.setOnTouchListener(this.touchListener);
 
 		LayoutParams params3 = new LayoutParams();
 		params3.width = LayoutParams.FILL_PARENT;
 		params3.height = LayoutParams.FILL_PARENT;
 		params3.type = LayoutParams.TYPE_SYSTEM_OVERLAY;
 		params3.format = PixelFormat.TRANSLUCENT;
-		params3.flags = LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+		params3.flags = LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 		params3.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
 
 		camera = Camera.open();
@@ -190,6 +201,8 @@ public class MainService extends Service {
 	private void shutdown()
 	{
 		this.wm.removeView(iView);
+		iView.setFocusable(false);
+		iView.setOnTouchListener(null);
 		
 		this.camera.setPreviewCallback(null);
 		this.camera.stopPreview();
