@@ -34,6 +34,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import android.util.Log;
+import android.util.DisplayMetrics;
 
 public class DrawActivity extends Activity
 {
@@ -47,23 +48,25 @@ public class DrawActivity extends Activity
 			WindowManager.LayoutParams.FLAG_FULLSCREEN,
 			WindowManager.LayoutParams.FLAG_FULLSCREEN
 		);
-
-        setContentView(R.layout.draw);
 		this.setup();
+        setContentView(R.layout.draw);
+		this.refresh();
     }
 
 	private void setup()
 	{
-		this.getWindow().setLayout(480, 800);
-		Scribble.setup(480, 800);
-		this.refresh();
+		DisplayMetrics dm = new DisplayMetrics();
+		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+		this.getWindow().setLayout(dm.widthPixels, dm.heightPixels);
+		Scribble.setup(dm.widthPixels, dm.heightPixels);
 	}
 
 	private void shutdown()
 	{
 		Scribble.getInstance().recycle();
 	}
-	
+
 	private void setPixel(float x, float y, int color)
 	{
 		Bitmap bitmap = Scribble.getInstance().bitmap;
