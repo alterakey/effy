@@ -37,20 +37,14 @@ public class Scribble
 		instance = this;
 	}
 
-	public static Scribble getInstance(int w, int h)
+	public static Scribble setup(int w, int h)
 	{
-		if (instance != null)
-		{
-			if (instance.width != w || instance.height != h)
-			{
-				throw new InvalidSizeError(
-					String.format("scribble size does not match ((%d, %d) <=> (%d, %d))",
-								  instance.width, instance.height, w, h)
-					);
-			}
-			return instance;
-		}
 		return new Scribble(w, h);
+	}
+
+	public static Scribble getInstance()
+	{
+		return instance;
 	}
 
 	public void recycle()

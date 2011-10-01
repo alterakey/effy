@@ -80,11 +80,13 @@ public class MainService extends Service {
 
 	private void setup()
 	{
+		Scribble.setup(1, 1);
+
 		this.windowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
 		this.view = new ImageView(getApplicationContext());
 		this.view.setScaleType(ScaleType.CENTER_CROP);
-		this.view.setImageDrawable(new BitmapDrawable(Scribble.getInstance(1, 1).bitmap));
+		this.view.setImageDrawable(new BitmapDrawable(Scribble.getInstance().bitmap));
 
 		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 			LayoutParams.FILL_PARENT,
@@ -101,7 +103,7 @@ public class MainService extends Service {
 	private void shutdown()
 	{
 		this.windowManager.removeView(view);
-		Scribble.getInstance(1, 1).recycle();
+		Scribble.getInstance().recycle();
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class DrawActivity extends Activity
 	
 	private void setPixel(float x, float y, int color)
 	{
-		Bitmap bitmap = Scribble.getInstance(1, 1).bitmap;
+		Bitmap bitmap = Scribble.getInstance().bitmap;
 		bitmap.setPixel(0, 0, color);
 		refresh();
 	}
@@ -53,7 +53,7 @@ public class DrawActivity extends Activity
 	private void refresh()
 	{
 		ImageView view = (ImageView)findViewById(R.id.view);
-		view.setImageDrawable(new BitmapDrawable(Scribble.getInstance(1, 1).bitmap));
+		view.setImageDrawable(new BitmapDrawable(Scribble.getInstance().bitmap));
 	}
 
 	@Override
