@@ -56,6 +56,18 @@ public class DrawActivity extends Activity
 		view.setImageDrawable(new BitmapDrawable(Scribble.getInstance().bitmap));
 	}
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+		this.refresh();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+		Scribble.getInstance().clear();
+    }
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
