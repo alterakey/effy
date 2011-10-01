@@ -30,6 +30,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import android.util.Log;
 
@@ -40,13 +42,49 @@ public class DrawActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(
+			WindowManager.LayoutParams.FLAG_FULLSCREEN,
+			WindowManager.LayoutParams.FLAG_FULLSCREEN
+		);
+
         setContentView(R.layout.draw);
+		this.setup();
     }
+
+	private void setup()
+	{
+		this.getWindow().setLayout(480, 800);
+		Scribble.setup(480, 800);
+		this.refresh();
+	}
+
+	private void shutdown()
+	{
+		Scribble.getInstance().recycle();
+	}
 	
 	private void setPixel(float x, float y, int color)
 	{
 		Bitmap bitmap = Scribble.getInstance().bitmap;
-		bitmap.setPixel(0, 0, color);
+		int radius = 5;
+		int start_x = (int)(x - radius/2);
+		int start_y = (int)(y - radius/2);
+
+		for (int i=start_x; i<start_x+radius; ++i)
+		{
+			for (int j=start_y; j<start_y+radius; ++j)
+			{
+				try
+				{
+					bitmap.setPixel(i, j, color);
+				}
+				catch (IllegalArgumentException e)
+				{
+				}
+			}
+		}
+
 		refresh();
 	}
 
@@ -59,29 +97,28 @@ public class DrawActivity extends Activity
     @Override
     protected void onResume() {
         super.onResume();
+		this.setup();
 		this.refresh();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-		Scribble.getInstance().clear();
+		this.shutdown();
     }
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
 		int action = event.getAction() & MotionEvent.ACTION_MASK;
-		int actionIndex = (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >>> MotionEvent.ACTION_POINTER_ID_SHIFT;
 		
 		switch (action & MotionEvent.ACTION_MASK) 
 		{
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN:
 		case MotionEvent.ACTION_MOVE:
-			Log.d("com.gmail.altakey.effy.DrawActivity", String.format("touched!: %d", action & MotionEvent.ACTION_MASK));
-			float x = event.getX(actionIndex);
-			float y = event.getY(actionIndex);
+			float x = event.getRawX();
+			float y = event.getRawY();
 			setPixel(x, y, 0xffffffff);
 			break;
 		default:

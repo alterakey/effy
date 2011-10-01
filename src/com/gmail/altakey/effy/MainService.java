@@ -49,7 +49,6 @@ public class MainService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		this.setup();
 		notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		showNotifyIcon();
 		isRunning = true;
@@ -58,19 +57,8 @@ public class MainService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		this.shutdown();
 		notificationManager.cancel(NOTIFICATION);
 		isRunning = false;
-	}
-
-	private void setup()
-	{
-		Scribble.setup(1, 1);
-	}
-
-	private void shutdown()
-	{
-		Scribble.getInstance().recycle();
 	}
 
 	@Override
