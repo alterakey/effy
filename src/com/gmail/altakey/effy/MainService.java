@@ -27,18 +27,7 @@ import android.os.Binder;
 import android.content.Intent;
 import android.util.Log;
 
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
-import android.view.Gravity;
-import android.content.Context;
 
 public class MainService extends Service {
 	private NotificationManager notificationManager;
@@ -46,10 +35,6 @@ public class MainService extends Service {
 
 	private final int NOTIFICATION = 0xdeadbeef;
 	private final IBinder binder = new MainBinder();
-
-	private WindowManager windowManager;
-	private ImageView view;
-	private Bitmap bmp;
 
 	private int cnt;
 	
@@ -81,28 +66,10 @@ public class MainService extends Service {
 	private void setup()
 	{
 		Scribble.setup(1, 1);
-
-		this.windowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
-
-		this.view = new ImageView(getApplicationContext());
-		this.view.setScaleType(ScaleType.CENTER_CROP);
-		this.view.setImageDrawable(new BitmapDrawable(Scribble.getInstance().bitmap));
-
-		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-			LayoutParams.FILL_PARENT,
-			LayoutParams.FILL_PARENT,
-			LayoutParams.TYPE_SYSTEM_OVERLAY,
-			LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-			PixelFormat.TRANSLUCENT
-		);
-		params.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
-
-		this.windowManager.addView(view, params);
 	}
 
 	private void shutdown()
 	{
-		this.windowManager.removeView(view);
 		Scribble.getInstance().recycle();
 	}
 
