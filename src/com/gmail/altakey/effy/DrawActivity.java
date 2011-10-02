@@ -29,6 +29,8 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.widget.ImageView;
 import android.view.Window;
 import android.view.WindowManager;
@@ -70,24 +72,10 @@ public class DrawActivity extends Activity
 	private void setPixel(float x, float y, int color)
 	{
 		Bitmap bitmap = Scribble.getInstance().bitmap;
-		int radius = 5;
-		int start_x = (int)(x - radius/2);
-		int start_y = (int)(y - radius/2);
-
-		for (int i=start_x; i<start_x+radius; ++i)
-		{
-			for (int j=start_y; j<start_y+radius; ++j)
-			{
-				try
-				{
-					bitmap.setPixel(i, j, color);
-				}
-				catch (IllegalArgumentException e)
-				{
-				}
-			}
-		}
-
+		Canvas canvas = new Canvas(bitmap);
+		Paint paint = new Paint();
+		paint.setColor(color);
+		canvas.drawCircle(x, y, 5.0f, paint);
 		refresh();
 	}
 
