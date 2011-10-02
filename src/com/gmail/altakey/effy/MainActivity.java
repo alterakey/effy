@@ -42,10 +42,10 @@ public class MainActivity extends Activity
 				Intent intents = new Intent(MainActivity.this, MainService.class);
 				if(MainService.isRunning){
 					stopService(intents);
-					Toast.makeText(MainActivity.this, "stop", Toast.LENGTH_LONG).show();
+					Toast.makeText(MainActivity.this, getText(R.string.service_stopped), Toast.LENGTH_LONG).show();
 				}else{
 					startService(intents);
-					Toast.makeText(MainActivity.this, "start", Toast.LENGTH_LONG).show();
+					Toast.makeText(MainActivity.this, getText(R.string.service_started), Toast.LENGTH_LONG).show();
 				}
 				finish();
 			}
