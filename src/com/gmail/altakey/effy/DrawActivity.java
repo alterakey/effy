@@ -34,6 +34,9 @@ import android.graphics.Paint;
 import android.widget.ImageView;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import android.util.Log;
 import android.util.DisplayMetrics;
@@ -136,6 +139,28 @@ public class DrawActivity extends Activity
 			return false;
 		default:
 			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.draw, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		switch (item.getItemId())
+		{
+		case R.id.menu_close:
+			Intent intents = new Intent(DrawActivity.this, MainService.class);
+			stopService(intents);
+			Toast.makeText(DrawActivity.this, getText(R.string.service_stopped), Toast.LENGTH_LONG).show();
+			this.finish();
 		}
 		return true;
 	}
