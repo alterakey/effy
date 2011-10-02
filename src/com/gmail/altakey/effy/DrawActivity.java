@@ -69,13 +69,26 @@ public class DrawActivity extends Activity
 		Scribble.getInstance().recycle();
 	}
 
-	private void setPixel(float x, float y, int color)
+	private class Snapshot
+	{
+		public float x;
+		public float y;
+
+	}
+
+	public Snapshot snapshot;
+
+	private void plot(float x, float y, int color)
 	{
 		Bitmap bitmap = Scribble.getInstance().bitmap;
 		Canvas canvas = new Canvas(bitmap);
 		Paint paint = new Paint();
 		paint.setColor(color);
-		canvas.drawCircle(x, y, 5.0f, paint);
+		paint.setStrokeWidth(5.0f);
+		if (this.snapshot == null)
+			canvas.drawPoint(x, y, paint);
+		else
+			canvas.drawLine(this.snapshot.x, this.snapshot.y, x, y, paint);
 		refresh();
 	}
 
@@ -110,8 +123,15 @@ public class DrawActivity extends Activity
 		case MotionEvent.ACTION_MOVE:
 			float x = event.getRawX();
 			float y = event.getRawY();
-			setPixel(x, y, 0xffffffff);
+			plot(x, y, 0xffffffff);
+			if (this.snapshot == null)
+				this.snapshot = new Snapshot();
+			this.snapshot.x = x;
+			this.snapshot.y = y;
 			break;
+		case MotionEvent.ACTION_UP:
+			this.snapshot = null;
+			return false;
 		default:
 			return false;
 		}
