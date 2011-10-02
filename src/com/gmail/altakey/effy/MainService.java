@@ -57,7 +57,7 @@ public class MainService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		notificationManager.cancel(NOTIFICATION);
+		stopForeground(true);
 		isRunning = false;
 	}
 
@@ -83,9 +83,9 @@ public class MainService extends Service {
 		notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
 		notification.setLatestEventInfo(
 				this,
-				"MainService",
+				getText(R.string.app_name),
 				text,
 				contentIntent);
-		notificationManager.notify(NOTIFICATION, notification);
+		startForeground(NOTIFICATION, notification);
 	}
 }
