@@ -47,6 +47,7 @@ public class MainActivity extends Activity
 					startService(intents);
 					Toast.makeText(MainActivity.this, "start", Toast.LENGTH_LONG).show();
 				}
+				finish();
 			}
 		});
     }
