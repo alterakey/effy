@@ -79,7 +79,7 @@ public class MainService extends Service {
 		CharSequence text = "タップすると画面を表示します";
 		Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
 		PendingIntent contentIntent =
-			PendingIntent.getActivity(this, 0, new Intent(this, DrawActivity.class), 0);
+			PendingIntent.getActivity(this, 0, new Intent(this, DrawActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), 0);
 		notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
 		notification.setLatestEventInfo(
 				this,
