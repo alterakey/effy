@@ -80,6 +80,7 @@ public class MainService extends Service {
 		Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
 		PendingIntent contentIntent =
 			PendingIntent.getActivity(this, 0, new Intent(this, DrawActivity.class), 0);
+		notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
 		notification.setLatestEventInfo(
 				this,
 				"MainService",
