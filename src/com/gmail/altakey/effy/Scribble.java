@@ -25,6 +25,7 @@ public class Scribble
 	private static Scribble instance;
 
 	public Bitmap bitmap;
+	public static Bitmap bitmap_cover = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
 	public int width;
 	public int height;
 	

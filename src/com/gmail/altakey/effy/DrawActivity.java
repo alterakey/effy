@@ -67,6 +67,8 @@ public class DrawActivity extends Activity
 	private void shutdown()
 	{
 		Scribble.getInstance().recycle();
+		ImageView view = (ImageView)findViewById(R.id.view);
+		view.setImageDrawable(new BitmapDrawable(Scribble.bitmap_cover));
 	}
 
 	private class Snapshot
