@@ -41,8 +41,12 @@ import android.view.MenuItem;
 import android.util.Log;
 import android.util.DisplayMetrics;
 
-public class DrawActivity extends Activity
+import com.example.android.apis.graphics.ColorPickerDialog;
+
+public class DrawActivity extends Activity implements ColorPickerDialog.OnColorChangedListener
 {
+	private Paint paint = new Paint();
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -53,10 +57,21 @@ public class DrawActivity extends Activity
 			WindowManager.LayoutParams.FLAG_FULLSCREEN,
 			WindowManager.LayoutParams.FLAG_FULLSCREEN
 		);
+
+		this.initialSetup();
 		this.setup();
         setContentView(R.layout.draw);
 		this.refresh();
     }
+
+	private void initialSetup()
+	{
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+		int color = pref.getInt("_color", 0xffffffff);
+		this.paint.setColor(color);
+		this.paint.setStrokeWidth(5.0f);
+	}
 
 	private void setup()
 	{
@@ -83,17 +98,14 @@ public class DrawActivity extends Activity
 
 	public Snapshot snapshot;
 
-	private void plot(float x, float y, int color)
+	private void plot(float x, float y)
 	{
 		Bitmap bitmap = Scribble.getInstance().bitmap;
 		Canvas canvas = new Canvas(bitmap);
-		Paint paint = new Paint();
-		paint.setColor(color);
-		paint.setStrokeWidth(5.0f);
 		if (this.snapshot == null)
-			canvas.drawPoint(x, y, paint);
+			canvas.drawPoint(x, y, this.paint);
 		else
-			canvas.drawLine(this.snapshot.x, this.snapshot.y, x, y, paint);
+			canvas.drawLine(this.snapshot.x, this.snapshot.y, x, y, this.paint);
 		refresh();
 	}
 
@@ -128,7 +140,7 @@ public class DrawActivity extends Activity
 		case MotionEvent.ACTION_MOVE:
 			float x = event.getRawX();
 			float y = event.getRawY();
-			plot(x, y, 0xffffffff);
+			plot(x, y);
 			if (this.snapshot == null)
 				this.snapshot = new Snapshot();
 			this.snapshot.x = x;
@@ -156,6 +168,9 @@ public class DrawActivity extends Activity
 	{
 		switch (item.getItemId())
 		{
+		case R.id.menu_pen_color:
+			new ColorPickerDialog(this, this, this.paint.getColor()).show();
+			return true;
 		case R.id.menu_close:
 			Intent intents = new Intent(DrawActivity.this, MainService.class);
 			stopService(intents);
@@ -163,5 +178,14 @@ public class DrawActivity extends Activity
 			this.finish();
 		}
 		return true;
+	}
+
+	public void colorChanged(int color)
+	{
+		SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		edit.putInt("_color", color);
+		edit.commit();
+
+		this.paint.setColor(color);
 	}
 }
