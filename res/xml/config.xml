@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="first_preferencescreen">
+    <Preference
+	android:title="Scribbler バージョン"
+	android:summary="0.1.0" />
+</PreferenceScreen> 
