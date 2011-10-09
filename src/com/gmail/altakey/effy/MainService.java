@@ -76,7 +76,7 @@ public class MainService extends Service {
 	
 	private void showNotifyIcon()
 	{
-		CharSequence text = "タップすると画面を表示します";
+		CharSequence text = getText(R.string.enter_drawing_mode_status);
 		Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
 		PendingIntent contentIntent =
 			PendingIntent.getActivity(this, 0, new Intent(this, DrawActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), 0);
