@@ -37,10 +37,18 @@ public class MainActivity extends Activity
         setContentView(R.layout.main);
 
 		Button bb = (Button)findViewById(R.id.button1);
+		View running = findViewById(R.id.running);
 		if (MainService.isRunning)
+		{
+			running.setVisibility(View.VISIBLE);
 			bb.setText(R.string.service_stop_button);
+		}
 		else
+		{
+			running.setVisibility(View.INVISIBLE);
 			bb.setText(R.string.service_start_button);
+		}
+
 
 		bb.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

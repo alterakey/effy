@@ -9,12 +9,24 @@
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="画面に落書きをすることができるアプリです。\nタブレット端末を使用したプレゼンテーションなどで、動作中のアプリなどにちょっと図示したりすることができます。" />
-
-  <Button
-      android:id="@+id/button1"
+      android:text="画面に落書きをすることができます。\n\nタブレット端末を使用したプレゼンテーションなどで、動作中のアプリなどにちょっと図示したりすることができます。" />
+  
+  <LinearLayout
+      android:orientation="vertical"
       android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="start/stop" />
+      android:layout_height="fill_parent"
+      android:gravity="bottom">
+    <Button
+	android:id="@+id/button1"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:text="start/stop" />
+    <TextView
+	android:id="@+id/running"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_marginTop="14sp"
+	android:layout_marginBottom="14sp"
+	android:text="既に起動しています。終了したい場合には描画中のメニューから「アプリの終了」を選ぶか、上のボタンを押して下さい。" />
+  </LinearLayout>
 </LinearLayout>
