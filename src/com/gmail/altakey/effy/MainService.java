@@ -33,7 +33,7 @@ public class MainService extends Service {
 	private NotificationManager notificationManager;
 	public static boolean isRunning;
 
-	private final int NOTIFICATION = 0xdeadbeef;
+	private final int NOTIFICATION = 1;
 	private final IBinder binder = new MainBinder();
 
 	private int cnt;
