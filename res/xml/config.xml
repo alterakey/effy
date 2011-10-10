@@ -10,5 +10,5 @@
 	    android:entryValues="@array/entry_values_drop_alpha" />
     <Preference
 	android:title="Scribbler バージョン"
-	android:summary="0.1.0" />
+	android:summary="@string/app_version" />
 </PreferenceScreen> 
