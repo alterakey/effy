@@ -47,6 +47,8 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 {
 	private Paint paint = new Paint();
 
+	private boolean keepContent = false;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -75,18 +77,24 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 	private void setup()
 	{
-		DisplayMetrics dm = new DisplayMetrics();
-		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		if (!keepContent)
+		{
+			DisplayMetrics dm = new DisplayMetrics();
+			this.getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-		this.getWindow().setLayout(dm.widthPixels, dm.heightPixels);
-		Scribble.setup(dm.widthPixels, dm.heightPixels);
+			this.getWindow().setLayout(dm.widthPixels, dm.heightPixels);
+			Scribble.setup(dm.widthPixels, dm.heightPixels);
+		}
 	}
 
 	private void shutdown()
 	{
-		Scribble.getInstance().recycle();
-		ImageView view = (ImageView)findViewById(R.id.view);
-		view.setImageDrawable(new BitmapDrawable(Scribble.bitmap_cover));
+		if (!keepContent)
+		{
+			Scribble.getInstance().recycle();
+			ImageView view = (ImageView)findViewById(R.id.view);
+			view.setImageDrawable(new BitmapDrawable(Scribble.bitmap_cover));
+		}
 	}
 
 	private void restyle()
@@ -129,6 +137,7 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		this.setup();
 		this.restyle();
 		this.refresh();
+		keepContent = false;
     }
 
     @Override
@@ -181,6 +190,7 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 			new ColorPickerDialog(this, this, this.paint.getColor()).show();
 			return true;
 		case R.id.menu_preferences:
+			this.keepContent = true;
 			startActivity(new Intent(this, ConfigActivity.class));
 			return true;
 		case R.id.menu_close:
