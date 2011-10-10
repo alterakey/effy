@@ -177,6 +177,9 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		case R.id.menu_pen_color:
 			new ColorPickerDialog(this, this, this.paint.getColor()).show();
 			return true;
+		case R.id.menu_preferences:
+			startActivity(new Intent(this, ConfigActivity.class));
+			return true;
 		case R.id.menu_close:
 			Intent intents = new Intent(DrawActivity.this, MainService.class);
 			stopService(intents);

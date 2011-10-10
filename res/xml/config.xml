@@ -2,6 +2,12 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="first_preferencescreen">
+    <ListPreference
+            android:key="drop_alpha"
+            android:title="背景の濃さ"
+	    android:defaultValue="192"
+	    android:entries="@array/entries_drop_alpha"
+	    android:entryValues="@array/entry_values_drop_alpha" />
     <Preference
 	android:title="Scribbler バージョン"
 	android:summary="0.1.0" />
