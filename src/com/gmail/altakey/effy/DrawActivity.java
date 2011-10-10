@@ -71,7 +71,7 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		int color = pref.getInt("_color", 0xffffffff);
-		this.paint.setColor(color);
+		this.setPenColor(color);
 		this.paint.setStrokeWidth(5.0f);
 	}
 
@@ -84,7 +84,7 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 			this.getWindow().setLayout(dm.widthPixels, dm.heightPixels);
 			Scribble.setup(dm.widthPixels, dm.heightPixels);
-		}
+		}		
 	}
 
 	private void shutdown()
@@ -103,6 +103,8 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 		int alpha = Integer.parseInt(pref.getString("drop_alpha", "192"));
 		findViewById(R.id.view).setBackgroundColor(alpha << 24);
+
+		this.setPenColor(this.paint.getColor());
 	}
 
 	private class Snapshot
@@ -208,6 +210,15 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		edit.putInt("_color", color);
 		edit.commit();
 
+		this.setPenColor(color);
+	}
+
+	private void setPenColor(int color)
+	{
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+		int alpha = Integer.parseInt(pref.getString("pen_alpha", "255"));
+		color = (color & 0xffffff) | (alpha << 24);
 		this.paint.setColor(color);
 	}
 }
