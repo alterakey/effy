@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
+import java.util.UnknownFormatConversionException;
 
 public class ConfigActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -60,8 +61,23 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
 	private void updateSummary(SharedPreferences sharedPreferences, String key)
 	{
         if (key.equals(ConfigKey.DROP_ALPHA))
-			this.drop_alpha.setSummary(this.drop_alpha.getEntry());
+			this.setSummary(this.drop_alpha, this.drop_alpha.getEntry());
         if (key.equals(ConfigKey.PEN_ALPHA))
-			this.pen_alpha.setSummary(this.pen_alpha.getEntry());
+			this.setSummary(this.pen_alpha, this.pen_alpha.getEntry());
 	}
+
+	private void setSummary(ListPreference lp, CharSequence summary)
+	{
+		try
+		{
+			lp.setSummary(summary);
+			lp.getSummary();
+		}
+		catch (UnknownFormatConversionException e)
+		{
+			lp.setSummary(summary.toString().replace("%", "%%"));
+			lp.getSummary();
+		}
+	}
+   
 }
