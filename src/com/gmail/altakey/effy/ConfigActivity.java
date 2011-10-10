@@ -25,6 +25,7 @@ import android.preference.PreferenceActivity;
 public class ConfigActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener
 {
 	private ListPreference drop_alpha;
+	private ListPreference pen_alpha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
         addPreferencesFromResource(R.xml.config);
 
 		this.drop_alpha = (ListPreference)getPreferenceScreen().findPreference(ConfigKey.DROP_ALPHA);
+		this.pen_alpha = (ListPreference)getPreferenceScreen().findPreference(ConfigKey.PEN_ALPHA);
     }
 
     @Override
@@ -40,6 +42,7 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
 
 		SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 		this.updateSummary(sharedPreferences, ConfigKey.DROP_ALPHA);
+		this.updateSummary(sharedPreferences, ConfigKey.PEN_ALPHA);
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
@@ -58,5 +61,7 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
 	{
         if (key.equals(ConfigKey.DROP_ALPHA))
 			this.drop_alpha.setSummary(this.drop_alpha.getEntry());
+        if (key.equals(ConfigKey.PEN_ALPHA))
+			this.pen_alpha.setSummary(this.pen_alpha.getEntry());
 	}
 }

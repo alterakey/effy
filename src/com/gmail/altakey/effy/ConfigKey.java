@@ -20,4 +20,5 @@ package com.gmail.altakey.effy;
 public class ConfigKey 
 {
 	public static final String DROP_ALPHA = "drop_alpha";
+	public static final String PEN_ALPHA = "pen_alpha";
 }

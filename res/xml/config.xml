@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="first_preferencescreen">
     <ListPreference
+            android:key="pen_alpha"
+            android:title="ペンの濃さ"
+	    android:defaultValue="255"
+	    android:entries="@array/entries_pen_alpha"
+	    android:entryValues="@array/entry_values_pen_alpha" />
+    <ListPreference
             android:key="drop_alpha"
             android:title="背景の濃さ"
 	    android:defaultValue="192"
