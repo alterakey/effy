@@ -89,6 +89,11 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		view.setImageDrawable(new BitmapDrawable(Scribble.bitmap_cover));
 	}
 
+	private void restyle()
+	{
+		findViewById(R.id.view).setBackgroundColor(0xa0000000);
+	}
+
 	private class Snapshot
 	{
 		public float x;
@@ -119,6 +124,7 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
     protected void onResume() {
         super.onResume();
 		this.setup();
+		this.restyle();
 		this.refresh();
     }
 
