@@ -91,7 +91,10 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 	private void restyle()
 	{
-		findViewById(R.id.view).setBackgroundColor(0xa0000000);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+		int alpha = Integer.parseInt(pref.getString("drop_alpha", "192"));
+		findViewById(R.id.view).setBackgroundColor(alpha << 24);
 	}
 
 	private class Snapshot
