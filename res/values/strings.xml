@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Scribbler</string>
-    <string name="app_version">0.1.3</string>
+    <string name="app_version">0.1.4</string>
     <string name="service_started">起動しました。通知領域から選択して描画できます。</string>
     <string name="service_stopped">終了しました。</string>
     <string name="service_start_button">起動</string>
