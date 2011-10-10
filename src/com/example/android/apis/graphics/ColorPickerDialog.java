@@ -45,8 +45,8 @@ public class ColorPickerDialog extends Dialog {
 			 * Brighten colors and added white spot.
 			 */
             mColors = new int[] {
-                0xFFFFFFFF, 0xFFFF3333, 0xFFFF33FF, 0xFF3333FF, 0xFF33FFFF, 0xFF33FF33,
-                0xFFFFFF33, 0xFFFF3333, 0xFFFFFFFF
+                0xFF808080, 0xFFFFFFFF, 0xFFFF3333, 0xFFFF33FF, 0xFF3333FF, 0xFF33FFFF, 0xFF33FF33,
+                0xFFFFFF33, 0xFFFF3333, 0xFF000000, 0xFF808080
             };
             Shader s = new SweepGradient(0, 0, mColors, null);
 
