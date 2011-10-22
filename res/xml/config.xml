@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="first_preferencescreen">
     <ListPreference
+            android:key="pen_width"
+            android:title="ペンの太さ"
+	    android:defaultValue="5"
+	    android:entries="@array/entries_pen_width"
+	    android:entryValues="@array/entry_values_pen_width" />
+    <ListPreference
             android:key="pen_alpha"
             android:title="ペンの濃さ"
 	    android:defaultValue="255"

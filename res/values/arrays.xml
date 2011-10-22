@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="entries_pen_width">
+        <item>極細</item>
+        <item>細</item>
+        <item>中太</item>
+        <item>太</item>
+        <item>極太</item>
+    </string-array>
+    <string-array name="entry_values_pen_width">
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>8</item>
+        <item>13</item>
+    </string-array>
     <string-array name="entries_pen_alpha">
         <item>0% (透明)</item>
         <item>12%</item>
