@@ -73,7 +73,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 		int color = pref.getInt("_color", 0xffffffff);
 		this.setPenColor(color);
-		this.paint.setStrokeWidth(5.0f);
 	}
 
 	private void setup()
@@ -106,6 +105,9 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		findViewById(R.id.view).setBackgroundColor(alpha << 24);
 
 		this.setPenColor(this.paint.getColor());
+
+		float pen_width = (float)Integer.parseInt(pref.getString(ConfigKey.PEN_WIDTH, "5"));
+		this.paint.setStrokeWidth(pen_width);
 	}
 
 	private class Snapshot
