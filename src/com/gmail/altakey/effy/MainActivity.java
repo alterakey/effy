@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.KeyEvent;
 
 public class MainActivity extends Activity
 {
@@ -86,5 +87,18 @@ public class MainActivity extends Activity
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean onKeyLongPress(int keyCode, KeyEvent event)
+	{
+		switch (keyCode)
+		{
+		case KeyEvent.KEYCODE_BACK:
+			this.openOptionsMenu();
+			return true;
+		}
+
+		return super.onKeyLongPress(keyCode, event);
 	}
 }

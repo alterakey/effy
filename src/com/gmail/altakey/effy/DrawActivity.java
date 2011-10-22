@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.MotionEvent;
+import android.view.KeyEvent;
 import android.content.Intent;
 import android.widget.Toast;
 import android.preference.PreferenceManager;
@@ -147,6 +148,19 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
         super.onPause();
 		this.shutdown();
     }
+
+	@Override
+	public boolean onKeyLongPress(int keyCode, KeyEvent event)
+	{
+		switch (keyCode)
+		{
+		case KeyEvent.KEYCODE_BACK:
+			this.openOptionsMenu();
+			return true;
+		}
+
+		return super.onKeyLongPress(keyCode, event);
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event)

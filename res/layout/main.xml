@@ -27,7 +27,7 @@
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="3. 描画中にメニューを出して色を変えられます。" />
+      android:text="3. 描画中にメニューを出して色を変えられます。バックボタンを長押しすることでもメニューを出せます。" />
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
