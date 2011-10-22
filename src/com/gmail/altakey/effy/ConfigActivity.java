@@ -27,6 +27,7 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
 {
 	private ListPreference drop_alpha;
 	private ListPreference pen_alpha;
+	private ListPreference pen_width;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
 
 		this.drop_alpha = (ListPreference)getPreferenceScreen().findPreference(ConfigKey.DROP_ALPHA);
 		this.pen_alpha = (ListPreference)getPreferenceScreen().findPreference(ConfigKey.PEN_ALPHA);
+		this.pen_width = (ListPreference)getPreferenceScreen().findPreference(ConfigKey.PEN_WIDTH);
     }
 
     @Override
@@ -44,6 +46,7 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
 		SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 		this.updateSummary(sharedPreferences, ConfigKey.DROP_ALPHA);
 		this.updateSummary(sharedPreferences, ConfigKey.PEN_ALPHA);
+		this.updateSummary(sharedPreferences, ConfigKey.PEN_WIDTH);
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
@@ -64,6 +67,8 @@ public class ConfigActivity extends PreferenceActivity implements SharedPreferen
 			this.setSummary(this.drop_alpha, this.drop_alpha.getEntry());
         if (key.equals(ConfigKey.PEN_ALPHA))
 			this.setSummary(this.pen_alpha, this.pen_alpha.getEntry());
+        if (key.equals(ConfigKey.PEN_WIDTH))
+			this.setSummary(this.pen_width, this.pen_width.getEntry());
 	}
 
 	private void setSummary(ListPreference lp, CharSequence summary)
