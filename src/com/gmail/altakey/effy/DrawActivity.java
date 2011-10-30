@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.MotionEvent;
 import android.view.KeyEvent;
+import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 import android.preference.PreferenceManager;
@@ -32,6 +33,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.widget.ImageView;
 import android.view.Window;
 import android.view.WindowManager;
@@ -48,6 +50,8 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 {
 	private Paint paint = new Paint();
 
+	private MyView view;
+
 	private boolean keepContent = false;
 
     /** Called when the activity is first created. */
@@ -55,6 +59,8 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		this.view = new MyView(this);
+
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(
 			WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -63,7 +69,7 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 		this.initialSetup();
 		this.setup();
-        setContentView(R.layout.draw);
+        setContentView(this.view);
 		this.refresh();
     }
 
@@ -92,8 +98,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		if (!keepContent)
 		{
 			Scribble.getInstance().recycle();
-			ImageView view = (ImageView)findViewById(R.id.view);
-			view.setImageDrawable(new BitmapDrawable(Scribble.bitmap_cover));
 		}
 	}
 
@@ -102,7 +106,7 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		int alpha = Integer.parseInt(pref.getString("drop_alpha", "192"));
-		findViewById(R.id.view).setBackgroundColor(alpha << 24);
+		this.view.setBackgroundColor(alpha << 24);
 
 		this.setPenColor(this.paint.getColor());
 
@@ -110,30 +114,9 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		this.paint.setStrokeWidth(pen_width);
 	}
 
-	private class Snapshot
-	{
-		public float x;
-		public float y;
-
-	}
-
-	public Snapshot snapshot;
-
-	private void plot(float x, float y)
-	{
-		Bitmap bitmap = Scribble.getInstance().bitmap;
-		Canvas canvas = new Canvas(bitmap);
-		if (this.snapshot == null)
-			canvas.drawPoint(x, y, this.paint);
-		else
-			canvas.drawLine(this.snapshot.x, this.snapshot.y, x, y, this.paint);
-		refresh();
-	}
-
 	private void refresh()
 	{
-		ImageView view = (ImageView)findViewById(R.id.view);
-		view.setImageDrawable(new BitmapDrawable(Scribble.getInstance().bitmap));
+		this.view.invalidate();
 	}
 
     @Override
@@ -162,33 +145,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		}
 
 		return super.onKeyLongPress(keyCode, event);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event)
-	{
-		int action = event.getAction() & MotionEvent.ACTION_MASK;
-		
-		switch (action & MotionEvent.ACTION_MASK) 
-		{
-		case MotionEvent.ACTION_DOWN:
-		case MotionEvent.ACTION_POINTER_DOWN:
-		case MotionEvent.ACTION_MOVE:
-			float x = event.getRawX();
-			float y = event.getRawY();
-			plot(x, y);
-			if (this.snapshot == null)
-				this.snapshot = new Snapshot();
-			this.snapshot.x = x;
-			this.snapshot.y = y;
-			break;
-		case MotionEvent.ACTION_UP:
-			this.snapshot = null;
-			return false;
-		default:
-			return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -237,4 +193,85 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		color = (color & 0xffffff) | (alpha << 24);
 		this.paint.setColor(color);
 	}
+
+	/**
+	 * Self-drawing custom view.
+	 * Borrowed and patched from Android SDK API demo, namely
+	 * com.example.android.apis.graphics.FingerPaint.MyView (#7)
+	 */
+    public class MyView extends View {
+        private Bitmap  mBitmap;
+        private Canvas  mCanvas;
+        private Path    mPath;
+        private Paint   mBitmapPaint;
+		private Paint   mPaint = paint;
+
+        public MyView(Context c) {
+            super(c);
+            mPath = new Path();
+            mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+        }
+
+        @Override
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+            super.onSizeChanged(w, h, oldw, oldh);
+            mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            mCanvas = new Canvas(mBitmap);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            canvas.drawColor(0x00000000);
+            canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+            canvas.drawPath(mPath, mPaint);
+        }
+
+        private float mX, mY;
+        private static final float TOUCH_TOLERANCE = 4;
+
+        private void touch_start(float x, float y) {
+            mPath.reset();
+            mPath.moveTo(x, y);
+            mX = x;
+            mY = y;
+        }
+        private void touch_move(float x, float y) {
+            float dx = Math.abs(x - mX);
+            float dy = Math.abs(y - mY);
+            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
+                mX = x;
+                mY = y;
+            }
+        }
+        private void touch_up() {
+            mPath.lineTo(mX, mY);
+            // commit the path to our offscreen
+            mCanvas.drawPath(mPath, mPaint);
+            // kill this so we don't double draw
+            mPath.reset();
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            float x = event.getX();
+            float y = event.getY();
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    touch_start(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    touch_move(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    touch_up();
+                    invalidate();
+                    break;
+            }
+            return true;
+        }
+    }
 }
