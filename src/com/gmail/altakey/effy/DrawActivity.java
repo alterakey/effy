@@ -49,15 +49,14 @@ import com.example.android.apis.graphics.ColorPickerDialog;
 public class DrawActivity extends Activity implements ColorPickerDialog.OnColorChangedListener
 {
 	private Paint paint = new Paint();
-
-	private MyView view;
+	private ScribbleView view;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-		this.view = new MyView(this);
+		this.view = new ScribbleView(this, this.paint);
         this.paint.setAntiAlias(true);
         this.paint.setDither(true);
         this.paint.setColor(0xFFFFFFFF);
@@ -172,84 +171,4 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		color = (color & 0xffffff) | (alpha << 24);
 		this.paint.setColor(color);
 	}
-
-	/**
-	 * Self-drawing custom view.
-	 * Borrowed and patched from Android SDK API demo, namely
-	 * com.example.android.apis.graphics.FingerPaint.MyView (#7)
-	 */
-    public class MyView extends View {
-        private Bitmap bitmap;
-        private Canvas canvas;
-        private Path path;
-        private Paint bitmapPaint;
-
-        private float x, y;
-        private static final float TOUCH_TOLERANCE = 4;
-
-        public MyView(Context c) {
-            super(c);
-            this.path = new Path();
-            this.bitmapPaint = new Paint(Paint.DITHER_FLAG);
-        }
-
-        @Override
-        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-            super.onSizeChanged(w, h, oldw, oldh);
-            this.bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            this.canvas = new Canvas(this.bitmap);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            canvas.drawColor(0x00000000);
-            canvas.drawBitmap(this.bitmap, 0, 0, this.bitmapPaint);
-            canvas.drawPath(this.path, paint);
-        }
-
-        private void touch_start(float x, float y) {
-            this.path.reset();
-            this.path.moveTo(x, y);
-            this.x = x;
-            this.y = y;
-        }
-        private void touch_move(float x, float y) {
-            float dx = Math.abs(x - this.x);
-            float dy = Math.abs(y - this.y);
-            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                this.path.quadTo(this.x, this.y, (x + this.x)/2, (y + this.y)/2);
-                this.x = x;
-                this.y = y;
-            }
-        }
-        private void touch_up() {
-            this.path.lineTo(this.x, this.y);
-            // commit the path to our offscreen
-            this.canvas.drawPath(this.path, paint);
-            // kill this so we don't double draw
-            this.path.reset();
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            float x = event.getX();
-            float y = event.getY();
-
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    this.touch_start(x, y);
-                    invalidate();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    this.touch_move(x, y);
-                    invalidate();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    this.touch_up();
-                    invalidate();
-                    break;
-            }
-            return true;
-        }
-    }
 }
