@@ -60,6 +60,12 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
     {
         super.onCreate(savedInstanceState);
 		this.view = new MyView(this);
+        this.paint.setAntiAlias(true);
+        this.paint.setDither(true);
+        this.paint.setColor(0xFFFFFFFF);
+        this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setStrokeJoin(Paint.Join.ROUND);
+        this.paint.setStrokeCap(Paint.Cap.ROUND);
 
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(
