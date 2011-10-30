@@ -56,19 +56,13 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-		this.view = new ScribbleView(this, this.paint);
-        this.paint.setAntiAlias(true);
-        this.paint.setDither(true);
-        this.paint.setColor(0xFFFFFFFF);
-        this.paint.setStyle(Paint.Style.STROKE);
-        this.paint.setStrokeJoin(Paint.Join.ROUND);
-        this.paint.setStrokeCap(Paint.Cap.ROUND);
-
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(
 			WindowManager.LayoutParams.FLAG_FULLSCREEN,
 			WindowManager.LayoutParams.FLAG_FULLSCREEN
 		);
+
+		this.view = new ScribbleView(this, this.paint);
 
 		this.initialSetup();
         setContentView(this.view);
@@ -78,6 +72,13 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 	private void initialSetup()
 	{
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        this.paint.setAntiAlias(true);
+        this.paint.setDither(true);
+        this.paint.setColor(0xFFFFFFFF);
+        this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setStrokeJoin(Paint.Join.ROUND);
+        this.paint.setStrokeCap(Paint.Cap.ROUND);
 
 		int color = pref.getInt("_color", 0xffffffff);
 		this.setPenColor(color);
