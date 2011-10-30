@@ -52,8 +52,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 	private MyView view;
 
-	private boolean keepContent = false;
-
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -74,7 +72,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 		);
 
 		this.initialSetup();
-		this.setup();
         setContentView(this.view);
 		this.refresh();
     }
@@ -85,26 +82,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 
 		int color = pref.getInt("_color", 0xffffffff);
 		this.setPenColor(color);
-	}
-
-	private void setup()
-	{
-		if (!keepContent)
-		{
-			DisplayMetrics dm = new DisplayMetrics();
-			this.getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-			this.getWindow().setLayout(dm.widthPixels, dm.heightPixels);
-			Scribble.setup(dm.widthPixels, dm.heightPixels);
-		}		
-	}
-
-	private void shutdown()
-	{
-		if (!keepContent)
-		{
-			Scribble.getInstance().recycle();
-		}
 	}
 
 	private void restyle()
@@ -128,16 +105,13 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
     @Override
     protected void onResume() {
         super.onResume();
-		this.setup();
 		this.restyle();
 		this.refresh();
-		keepContent = false;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-		this.shutdown();
     }
 
 	@Override
@@ -170,7 +144,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 			new ColorPickerDialog(this, this, this.paint.getColor()).show();
 			return true;
 		case R.id.menu_preferences:
-			this.keepContent = true;
 			startActivity(new Intent(this, ConfigActivity.class));
 			return true;
 		case R.id.menu_close:
