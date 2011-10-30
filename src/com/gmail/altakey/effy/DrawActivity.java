@@ -179,10 +179,13 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
 	 * com.example.android.apis.graphics.FingerPaint.MyView (#7)
 	 */
     public class MyView extends View {
-        private Bitmap  bitmap;
-        private Canvas  canvas;
-        private Path    path;
-        private Paint   bitmapPaint;
+        private Bitmap bitmap;
+        private Canvas canvas;
+        private Path path;
+        private Paint bitmapPaint;
+
+        private float x, y;
+        private static final float TOUCH_TOLERANCE = 4;
 
         public MyView(Context c) {
             super(c);
@@ -203,9 +206,6 @@ public class DrawActivity extends Activity implements ColorPickerDialog.OnColorC
             canvas.drawBitmap(this.bitmap, 0, 0, this.bitmapPaint);
             canvas.drawPath(this.path, paint);
         }
-
-        private float x, y;
-        private static final float TOUCH_TOLERANCE = 4;
 
         private void touch_start(float x, float y) {
             this.path.reset();
