@@ -9,33 +9,33 @@
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="You can scribble over the screen with this application.\n\ne.g. quick scribbling on live application in a presentation session with tablet devices." />
+      android:text="画面に落書きをすることができます。\n\nタブレット端末を使用したプレゼンテーションなどで、動作中のアプリなどにちょっと図示したりすることができます。" />
   
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="14sp"
-      android:text="USAGE" />
+      android:text="使い方" />
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="1. Tap the button below" />
+      android:text="1. まず下のボタンを押して起動します。" />
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="2. Enter scribbling mode from the Notification bar" />
+      android:text="2. 通知バーからScribblerをタップすると描画モードへ入ります。" />
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="3. You can change pen color with the option menu (alernatively you call it by long-pressing the Back key.)" />
+      android:text="3. 描画中にメニューを出して色を変えられます。バックボタンを長押しすることでもメニューを出せます。" />
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="4. Press the Home or Back key when you're done." />
+      android:text="4. 描き終わったらバックキーやホームキーで戻れます。" />
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="5. Select Exit from the menu in scribbling mode, to quit the application." />
+      android:text="5. 終了するには描画中のメニューから「アプリの終了」を選んで下さい。" />
 
   <LinearLayout
       android:orientation="vertical"
@@ -53,6 +53,6 @@
 	android:layout_height="wrap_content"
 	android:layout_marginTop="14sp"
 	android:layout_marginBottom="14sp"
-	android:text="Service is ready.  Tap the button above or select Exit from the menu in scribbling mode to quit." />
+	android:text="既に起動しています。終了したい場合には描画中のメニューから「アプリの終了」を選ぶか、上のボタンを押して下さい。" />
   </LinearLayout>
 </LinearLayout>
