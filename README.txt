@@ -42,10 +42,6 @@ It is available at: https://gist.github.com/1223663 .
 
  * Drop color is not configurable
 
- * UI is in Japanese only
-
-   Translation efforts, in any form, will be welcomed.
-
 
 3. ACKNOWLEDGES
 =================
