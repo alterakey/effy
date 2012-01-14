@@ -1,7 +1,7 @@
 README
 =======
 
-Copyright (C) 2011 Takahiro Yoshimura <altakey@gmail.com>
+Copyright (C) 2011-2012 Takahiro Yoshimura <altakey@gmail.com>
 
 This is another scribbling application for Android platform (2.2 and
 up.)  You can use it for quick scribbling in an Android-powered
